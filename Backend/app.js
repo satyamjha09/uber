@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import userRoutes from "./routes/userRoutes.js";
+import captainRoutes from "./routes/captainRoutes.js";
 
 import express from 'express';
 import cors from 'cors';
@@ -19,6 +20,8 @@ app.use(cookieParser());
 
 // ✅ Now register your routes
 app.use("/api/users", userRoutes);
+app.use("/api/captains", captainRoutes);
+
 
 // Optional test route
 app.get('/', (req, res) => {

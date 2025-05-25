@@ -87,4 +87,4 @@ Send a JSON object with the following fields:
 - All fields are required.
 - The email must be unique and valid.
 - The password must be at least 6 characters long.
-- On success, a JWT token is returned for authentication in future requests.
+- On success, a JWT token is returned for authentication in future requests.vbcv

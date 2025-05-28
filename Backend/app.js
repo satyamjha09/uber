@@ -13,7 +13,10 @@ const app = express();
 connectDB(); // Connect to the database
 
 // ✅ Middleware setup — move these above the routes
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Your frontend URL, update if different
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

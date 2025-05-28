@@ -14,7 +14,10 @@ const CaptainLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/captains/login', captain);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/captains/login`, captain);
+
+      
+
       // Handle login success, e.g., store token, show toast, redirect
       console.log(response.data);
       navigate('/captain/dashboard'); // Update route as needed

@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../context/UserContext';
+import { toast} from 'react-toastify';
 
 const Signup = () => {
+
   const navigate = useNavigate();
 
-  const [user, setUser] = useState({
+  const { setUser } = useContext(UserContext);
+
+  const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -16,9 +21,19 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/users/register', user);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/users/register`, form);
       console.log(response.data);
-      navigate('/login');
+
+       const data = response.data.user;
+       localStorage.setItem('token', JSON.stringify(data.token));
+       toast.success('Registration successful! Please login to continue.');
+
+      setUser({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+      });
+      navigate('/home');
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.message || 'An error occurred during registration');
@@ -38,32 +53,32 @@ const Signup = () => {
         <form onSubmit={submitHandler} className="space-y-4">
           <input
             type="text"
-            value={user.firstName}
-            onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+            value={form.firstName}
+            onChange={(e) => setForm({ ...form, firstName: e.target.value })}
             placeholder="First Name"
             className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
             required
           />
           <input
             type="text"
-            value={user.lastName}
-            onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+            value={form.lastName}
+            onChange={(e) => setForm({ ...form, lastName: e.target.value })}
             placeholder="Last Name"
             className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
             required
           />
           <input
             type="email"
-            value={user.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
             placeholder="Email"
             className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
             required
           />
           <input
             type="password"
-            value={user.password}
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
             placeholder="Password"
             className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
             required
@@ -72,7 +87,7 @@ const Signup = () => {
             type="submit"
             className="w-full bg-black text-white py-3 rounded hover:bg-gray-800 transition duration-300 font-semibold"
           >
-            Sign Up
+            Create Account
           </button>
           <p className="mt-4 text-center text-sm">
             Already have an account?{' '}
